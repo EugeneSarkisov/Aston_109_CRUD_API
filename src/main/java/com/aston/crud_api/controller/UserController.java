@@ -62,7 +62,7 @@ public class UserController {
                             )
                     })
     })
-    @PostMapping("/create")
+    @PutMapping("/create")
     public ResponseEntity<GettingUserAccountResponse> createNewUserAccount(
             @RequestBody @Parameter(name = "UserAccountCreationRequest", description = "New User Account DTO")
             UserAccountCreationRequest request
@@ -89,7 +89,7 @@ public class UserController {
                             )
                     })
     })
-    @PostMapping("/delete")
+    @DeleteMapping("/delete")
     public ResponseEntity<Boolean> deleteAccount(
             @RequestBody @Parameter(name = "UsernameRequest", description = "Existing username DTO")
             UsernameRequest request
