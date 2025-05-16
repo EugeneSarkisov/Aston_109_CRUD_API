@@ -35,7 +35,7 @@ public class UserService {
                 .build();
     }
 
-    public boolean createUserAccount(UserAccountCreationRequest request){
+    public GettingUserAccountResponse createUserAccount(UserAccountCreationRequest request){
         try {
             UserAccount account = UserAccount.builder()
                     .username(request.getUsername())
@@ -50,7 +50,11 @@ public class UserService {
                     .notification(request.getUsername() + " user was successfully created! " + " User email: " + request.getEmail())
                     .build();
             kafkaCreatedTemplate.send("crud-api-events-topic", accountCreatedEvent);
-            return true;
+            return GettingUserAccountResponse.builder()
+                    .username(request.getUsername())
+                    .email(request.getEmail())
+                    .age(request.getAge())
+                    .build();
         } catch (Exception e){
             e.printStackTrace();
             UserAccountCreatedEvent accountErrorEvent = UserAccountCreatedEvent.builder()
@@ -59,7 +63,7 @@ public class UserService {
                     .notification(request.getUsername() + " user wasn't created. Please, try again " + " User email: " + request.getEmail())
                     .build();
             kafkaCreatedTemplate.send("crud-api-error-event-topic", accountErrorEvent);
-            return false;
+            return null;
         }
     }
 
